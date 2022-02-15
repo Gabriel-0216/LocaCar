@@ -1,5 +1,6 @@
 using LocaCar.WebApp.Data;
 using LocaCar.WebApp.Services.AccountServices;
+using LocaCar.WebApp.Services.CategoryServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 builder.Services.AddHttpClient();
 
 

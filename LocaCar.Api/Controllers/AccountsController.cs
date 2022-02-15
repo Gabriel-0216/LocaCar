@@ -30,5 +30,19 @@ namespace LocaCar.Api.Controllers
             var result = await _mediator.Send(command);
             return result.Success ? Ok(result) : BadRequest(result);
         }
+
+        [HttpPost]
+        [Route("user-change-password")]
+        public async Task<IActionResult> ChangePasswordAsync()
+        {
+            return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("user-change-email")]
+        public async Task<IActionResult> ChangeEmailAsync()
+        {
+            return BadRequest();
+        }
     }
 }

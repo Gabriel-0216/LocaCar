@@ -60,20 +60,21 @@ namespace LocaCar.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLogin login)
         {
-            if (!ModelState.IsValid) throw new Exception("Teste");
+            if (!ModelState.IsValid) throw new Exception("Testing");
 
             var userLoginModel = new UserLoginPostDto(login.Email, login.Password);
             var response = await _accountSvc.UserLoginService(userLoginModel);
-
-            if (response.Email is "") throw new Exception("Falha no login");
             
+            if (response.Email is "") throw new Exception("Failed login");
+
+            SetJwt(response.JwtToken, response.ValidDate);
             var identityUser = new IdentityUser()
             {
                 Id = response.Id,
                 Email = response.Email,
                 UserName = response.Name,
             };
-            await _signInManager.SignInAsync(identityUser, isPersistent: false);
+            await _signInManager.SignInAsync(identityUser, false);
             return RedirectToAction("Index", "Home");
 
         }
@@ -88,6 +89,21 @@ namespace LocaCar.WebApp.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        private void SetJwt(string value, DateTime expireDate)
+        {
+            var option = new CookieOptions
+            {
+                Expires = expireDate
+            };
+
+            Response.Cookies.Append("jwt", value, option);
+        }
+
+        private string? GetJwt()
+        {
+            return Request.Cookies["Jwt"];
         }
     }
 }

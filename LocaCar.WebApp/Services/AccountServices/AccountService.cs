@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using LocaCar.WebApp.Exceptions;
 using LocaCar.WebApp.Services.AccountServices.Dtos.Request;
 using LocaCar.WebApp.Services.AccountServices.Dtos.Response;
 using LocaCar.WebApp.Services.AccountServices.Endpoints;
@@ -37,7 +38,7 @@ public class AccountService : IAccountService
         var deserialize = await JsonSerializer.DeserializeAsync<UserLoginResponseDto>(await response.Content.ReadAsStreamAsync(),
             DeserializerSettings.GetOptions());
 
-        return deserialize ?? throw new Exception("Failed to deserialize");
+        return deserialize ?? throw new RequestFailureException();
 
     }
 }
